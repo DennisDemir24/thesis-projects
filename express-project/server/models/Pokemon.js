@@ -4,18 +4,12 @@ const PokemonSchema = new mongoose.Schema({
     name: {
         type: String,
     },
-    type: {
+    imgUrl: {
         type: String,
     },
-    height: {
-        type: Number,
-    },
-    weight: {
-        type: Number,
-    },
-    photo: {
+    /* url: {
         type: String,
-    },
+    }, */
 })
 
 
