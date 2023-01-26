@@ -13,7 +13,9 @@ connectDB()
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use('/api', pokemonRoutes)
+// app.use('/api', pokemonRoutes)
+
+seed()
 
 const port = process.env.PORT || 5050
 app.listen(port, () => {

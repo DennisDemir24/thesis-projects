@@ -1,55 +1,46 @@
-import { Pokemon } from "./models/Pokemon.js";
+import { Character } from "./models/Character.js";
 import mongoose from "mongoose";
 import axios from 'axios'
 
-let pokemons = []
+let characters = []
 
-const fetchPokemon = async (url) => {
+const fetchCharacters = async () => {
     try {
-        const {data} = await axios.get(url)
-        return data
-    } catch (err) {
-        console.log(err)
-    }
-}
-
-const fetchPokemons = async () => {
-    try {
-        const {data} = await axios.get('https://pokeapi.co/api/v2/pokemon/', {
+        const { data } = await axios.get('https://rickandmortyapi.com/api/character/', {
             params: {
-                limit: 250
+                count: 826,
+                pages: 42,
             }
         })
-
-        const promises = data.results.map(async (item) => {
-            const pokemon = await fetchPokemon(item.url)
-            return pokemon
-        })
-        
-        let promiseData = await Promise.all(promises)
-        promiseData.map((item) => {
-            console.log(item)
-            pokemons.push({
-                name: item.name,
-                imgUrl: item.sprites.front_default
-            });
-        })
-        console.log(pokemons)
-        /* data.results.map(item => {
-            pokemons.push({
-                name: item.name,
-                url: item.url
+        data.results.map(character => {
+            characters.push({
+                id: character.id,
+                name: character.name,
+                status: character.status,
+                species: character.species,
+                type: character.type,
+                gender: character.gender,
+                origin: {
+                    name: character.origin.name,
+                    url: character.origin.url,
+                },
+                location: {
+                    name: character.location.name,
+                    url: character.location.url,
+                },
+                image: character.image,
+                episodes: character.episode,
+                url: character.url,
             })
-        }) */
+        })
     } catch (err) {
         console.log(err)
     }
 }
 
+fetchCharacters()
 
 
-
-fetchPokemons()
 
 export const seed = async () => {
     try {
@@ -58,8 +49,8 @@ export const seed = async () => {
             useUnifiedTopology: true,
         })
         console.log('MongoDB Connected...')
-        await Pokemon.deleteMany({})
-        await Pokemon.insertMany(pokemons)
+        await Character.deleteMany({})
+        await Character.insertMany(characters)
         console.log('Data Imported...')
         process.exit()
     } catch (err) {
