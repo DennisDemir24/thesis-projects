@@ -50,7 +50,7 @@ export const seed = async () => {
         })
         console.log('MongoDB Connected...')
         await Character.deleteMany({})
-        await Character.insertMany(characters)
+        //await Character.insertMany(characters)
         console.log('Data Imported...')
         process.exit()
     } catch (err) {

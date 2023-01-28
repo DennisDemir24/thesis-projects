@@ -15,6 +15,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/api/character', characterRoutes)
 
+// seed()
 
 const port = process.env.PORT || 5050
 app.listen(port, () => {
