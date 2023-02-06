@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 
 const CharacterSchema = new mongoose.Schema({
+    id: {
+        type: Number
+    },
     name: {
         type: String,
     },

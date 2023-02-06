@@ -1,5 +1,4 @@
 import {Character} from '../models/Character.js'
-import { checkObjectId } from '../middleware/checkObjectId.js'
 
 const getCharacters = async (req, res) => {
     try {
@@ -13,10 +12,8 @@ const getCharacters = async (req, res) => {
 
 const getCharacter = async (req, res) => {
     try {
-        // find character by id
-        const {id: id} = req.params
-        const character = await Character.findById({
-            _id: id
+        const character = await Character.findOne({
+            id: req.params.id
         })
 
         if (!character) {
@@ -25,7 +22,6 @@ const getCharacter = async (req, res) => {
             })
         }
 
-        console.log(character)
         res.json(character)
     } catch (err) {
         console.log(err)
