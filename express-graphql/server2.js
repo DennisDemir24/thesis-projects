@@ -1,8 +1,6 @@
 const {ApolloServer} = require('apollo-server');
 const mongoose = require('mongoose');
 
-const MONGODB = "mongodb+srv://dennisd123:dennisd123@cluster0.yushi.mongodb.net/TestAPI?retryWrites=true&w=majority";
-
 // APOLLO SERVEr
 // typeDefs: GraphQL Type Definitions
 // resolvers: How do we resolve queries / mutations
