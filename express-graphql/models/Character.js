@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose')
 
 const CharacterSchema = new mongoose.Schema({
     id: {
@@ -36,5 +36,4 @@ const CharacterSchema = new mongoose.Schema({
     }
 })
 
-
-export const Character = mongoose.model("Character", CharacterSchema)
+module.exports = mongoose.model('Character', CharacterSchema)
