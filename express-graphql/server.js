@@ -9,6 +9,7 @@ const typeDefs = gql`
     type Query {
         characters: [Character]
         character(id: ID!): Character
+        charactersByIds(ids: [ID!]!): [Character]
     }
 
     type Location {
@@ -54,6 +55,18 @@ const resolvers = {
                 return {
                     ...character._doc
                 }
+            } catch (error) {
+                console.error(error)
+            }
+        },
+        charactersByIds: async (_, {ids}) => {
+            try {
+                const characters = await Characters.find({
+                    id: {
+                        $in: ids
+                    }
+                })
+                return characters
             } catch (error) {
                 console.error(error)
             }
