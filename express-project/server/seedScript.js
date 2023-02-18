@@ -1,6 +1,11 @@
 import { Character } from "./models/Character.js";
 import mongoose from "mongoose";
 import axios from 'axios'
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+
+const characterJson = require('./db.json')
+
 
 let characters = []
 
