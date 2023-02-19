@@ -10,6 +10,7 @@ const typeDefs = gql`
         characters: [Character]
         character(id: ID!): Character
         charactersByIds(ids: [ID!]!): [Character]
+        getCharacters(amount: Int): [Character]
     }
 
     type Location {
@@ -42,6 +43,14 @@ const resolvers = {
         characters: async () => {
             try {
                 const characters = await Characters.find()
+                return characters
+            } catch (error) {
+                console.error(error)
+            }
+        },
+        getCharacters: async (_, {amount}) => {
+            try {
+                const characters = await Characters.find().limit(amount)
                 return characters
             } catch (error) {
                 console.error(error)
@@ -93,7 +102,7 @@ const connectDB = async () => {
 connectDB()
 
 
-const PORT = process.env.PORT || 5005;
+const PORT = process.env.PORT || 5008;
 
 server.listen(PORT,()=>{
     console.log(`Running running on port ${PORT}`)
