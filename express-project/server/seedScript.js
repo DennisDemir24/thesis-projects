@@ -43,7 +43,6 @@ const fetchCharacters = async () => {
     }
 }
 
-fetchCharacters()
 
 
 
@@ -55,6 +54,7 @@ export const seed = async () => {
         })
         console.log('MongoDB Connected...')
         await Character.deleteMany({})
+        await Character.create(characterJson)
         //await Character.insertMany(characters)
         console.log('Data Imported...')
         process.exit()

@@ -33,6 +33,9 @@ const CharacterSchema = new mongoose.Schema({
     },
     url: {
         type: String,
+    },
+    created: {
+        type: Date,
     }
 })
 
