@@ -27,16 +27,15 @@ def create_character(character):
     result = collection.insert_one(document)
     return document
 
-# def update_character(id, status, image, url):
-#     collection.update_one(
-#         {"id": int(id)}, 
-#         {"$set": {"status": status}},
-#         {"$set": {"image": image}},
-#         {"$set": {"url": url}}, 
-#         )
-#     document = collection.find_one({"id": int(id)})
-#     return document
+def update_character(id, status, image, url):
+    collection.update_one(
+        {"id": int(id)}, 
+        {"$set": {"status": status, "image": image, "url": url}},
+        upsert=True
+        )
+    document = collection.find_one({"id": int(id)})
+    return document
 
-async def remove_character(id):
-    await collection.delete_one({"id": int(id)})
+def remove_character(id):
+    collection.delete_one({"id": int(id)})
     return True

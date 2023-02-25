@@ -9,7 +9,7 @@ from database import (
     fetch_one_character,
     fetch_all_characters,
     create_character,
-    #update_character,
+    update_character,
     remove_character,
 )
 
@@ -51,17 +51,17 @@ def post_character(character: Character):
         return response
     raise HTTPException(400, "Something went wrong")
 
-# @app.put("/character/{id}/", response_model=Character)
-# async def put_character(
-#                         id: int,
-#                         status: str,
-#                         image: str,
-#                         url: str
-#                         ):
-#     response = update_character(id, status, image, url)
-#     if response:
-#         return response
-#     raise HTTPException(404, f"There is no character with the id {id}")
+@app.put("/character/{id}/", response_model=Character)
+def put_character(
+                        id: int,
+                        status: str,
+                        image: str,
+                        url: str
+                        ):
+    response = update_character(id, status, image, url)
+    if response:
+        return response
+    raise HTTPException(404, f"There is no character with the id {id}")
 
 @app.delete("/character/{id}")
 def delete_character(id):
