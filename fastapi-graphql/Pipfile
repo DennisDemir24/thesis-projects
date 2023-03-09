@@ -4,11 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-fastapi = "==0.92.0"
-uvicorn = "==0.20.0"
-motor = "==2.4.0"
-pymongo = "==4.3.3"
-swagger-ui = "*"
 
 [dev-packages]
 

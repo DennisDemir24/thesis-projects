@@ -3,8 +3,9 @@
 # Pydantic allows auto creation of JSON Schemas from models
 from pydantic import BaseModel
 
+
 class Character(BaseModel):
-    title: str
+    id: int
     name: str
     status: str
     species: str
@@ -13,5 +14,7 @@ class Character(BaseModel):
     origin: object 
     location: object 
     image: str 
-    episodes: list
+    episodes: object
     url: str
+    created: str
+
