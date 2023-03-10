@@ -1,29 +1,43 @@
 import strawberry
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from strawberry.fastapi import GraphQLRouter
+from pydantic import typing
+
+from database import (
+    fetch_one_character,
+    fetch_all_characters,
+    create_character,
+    update_character,
+    remove_character,
+)
 
 
 @strawberry.type
 class Character:
     id: int
     name: str
-    # status: str
-    # species: str
-    # type: str 
-    # gender: str 
-    # origin: object 
-    # location: object 
-    # image: str 
-    # episodes: object
-    # url: str
-    # created: str
+    status: str
+    species: str
+    type: str 
+    gender: str 
+    origin:  typing.List[str] 
+    location: typing.List[str]  
+    image: str 
+    episodes: typing.List[str]
+    url: str
+    created: str
 
 @strawberry.type
 class Query:
     @strawberry.field
-    def character(self) -> Character:
-        return Character(id=1, name="Rick")
+    def characters(self) -> typing.List[Character]:
+        response = fetch_all_characters()
+        return response
+    
+    # @strawberry.field
+    # def hello(self) -> str:
+    #     return "Hello World"
 
 schema = strawberry.Schema(Query)
 
