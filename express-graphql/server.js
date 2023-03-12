@@ -1,7 +1,11 @@
 const express = require('express');
 const app = express();
-const {ApolloServer, gql} = require('apollo-server')
+const {ApolloServer, gql} = require('apollo-server-express');
 const Characters = require('./models/Character')
+const {
+    startingMeasurment,
+    endingMeasurment,
+} = require('./utils/performance')
 
 const mongoose = require('mongoose')
 
@@ -89,6 +93,34 @@ const server = new ApolloServer({
     resolvers
 })
 
+const PORT = process.env.PORT || 5008;
+async function startServer() {
+    await server.start();
+    server.applyMiddleware({app});
+
+    // use middlewares
+    
+
+    await new Promise(
+        resolve => app.listen({port: PORT}, resolve)
+    )
+    console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`)
+    return {server, app};
+}
+startServer()
+
+   /*  app.use(express.json())
+    app.use(express.urlencoded({ extended: false }));
+    app.use((req, res, next) => {
+        const start = startingMeasurment()
+        console.log(start)
+        res.on('finish', () => {
+            const end = endingMeasurment(start)
+            console.log(JSON.stringify(end))
+        })
+        next()
+    }) */
+
 const connectDB = async () => {
     try {
         const conn = await mongoose.connect("mongodb+srv://dennisd123:dennisd123@cluster0.yushi.mongodb.net/RestThesisAPI?retryWrites=true&w=majority")
@@ -102,9 +134,11 @@ const connectDB = async () => {
 connectDB()
 
 
-const PORT = process.env.PORT || 5008;
 
-server.listen(PORT,()=>{
-    console.log(`Running running on port ${PORT}`)
-});
+
+
+
+
+
+
 

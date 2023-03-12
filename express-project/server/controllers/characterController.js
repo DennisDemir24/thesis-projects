@@ -9,7 +9,6 @@ const getCharacters = async (req, res) => {
     }
 }
 
-
 const getCharacter = async (req, res) => {
     try {
         const character = await Character.findOne({

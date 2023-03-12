@@ -1,6 +1,6 @@
-import {cpuUsage, memoryUsage} from 'process'
+const {cpuUsage, memoryUsage} = require('process')
 
-export const startingMeasurment = () => {
+const startingMeasurment = () => {
     const start = new Date()
 
     const getUsage = cpuUsage()
@@ -11,7 +11,7 @@ export const startingMeasurment = () => {
     }
 }
 
-export const endingMeasurment = (start) => {
+const endingMeasurment = (start) => {
     const end = new Date()
     const time = end.getTime() - start.time.getTime()
     const cpuUsed = cpuUsage(start.usage).user / 1000
@@ -24,4 +24,9 @@ export const endingMeasurment = (start) => {
     }
 
 
+}
+
+module.exports = {
+    startingMeasurment,
+    endingMeasurment
 }
