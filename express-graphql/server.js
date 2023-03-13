@@ -7,6 +7,24 @@ const {
     endingMeasurment,
 } = require('./utils/performance')
 
+// Define the middleware function
+const myMiddleware = (req, res, next) => {
+    console.log('Custom middleware was executed!');
+    next();
+  };
+
+  app.use(express.json())
+  app.use(express.urlencoded({ extended: false }));
+  app.use((req, res, next) => {
+      const start = startingMeasurment()
+      console.log(start)
+      res.on('finish', () => {
+          const end = endingMeasurment(start)
+          console.log(JSON.stringify(end))
+      })
+      next()
+  })
+
 const mongoose = require('mongoose')
 
 const typeDefs = gql`
