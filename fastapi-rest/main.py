@@ -3,6 +3,7 @@
 from fastapi import FastAPI, HTTPException
 
 from model import Character
+from performance import PerformanceMiddleware
 
 
 from database import (
@@ -27,6 +28,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+# Add performance middleware
+app.add_middleware(PerformanceMiddleware)
 
 @app.get("/")
 def read_root():
@@ -69,6 +74,5 @@ def delete_character(id):
     if response:
         return "Successfully deleted character"
     raise HTTPException(404, f"There is no character with the id {id}")
-
 
 

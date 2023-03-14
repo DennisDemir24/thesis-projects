@@ -5,6 +5,7 @@ import strawberry
 from fastapi import FastAPI, HTTPException
 from strawberry.fastapi import GraphQLRouter
 from pydantic import typing
+from performance import PerformanceMiddleware
 
 from database import (
     #fetch_one_character,
@@ -74,4 +75,7 @@ graphql_app = GraphQLRouter(schema)
 
 
 app = FastAPI()
+# Add performance middleware
+app.add_middleware(PerformanceMiddleware)
+
 app.include_router(graphql_app, prefix="/graphql")
