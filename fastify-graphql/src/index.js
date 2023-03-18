@@ -1,19 +1,28 @@
 const fastify = require('fastify')()
 const mercurius = require('mercurius')
-const { graphql, buildSchema } = require('graphql');
 const Characters = require('./models/Character');
 const express = require('express');
-const app = express();
 const connectDB = require('./db/connect');
+const {startingMeasurment, endingMeasurment} = require('./utils/performance')
 connectDB()
 
 
 
-const myMiddleware = (req, res, next) => {
-    console.log('This is my middleware')
-    next()
+const myMiddleware = (request, reply, done) => {
+    const start = startingMeasurment()
+    const end = endingMeasurment(start)
+    // reply.send(JSON.stringify(end))
+    console.log(
+        JSON.stringify(end)
+    )
+    done()
 }
-app.use(myMiddleware)
+
+fastify.addHook(
+    'onRequest',
+    myMiddleware
+)
+
 
 const schema = `
     type Query {
@@ -107,14 +116,6 @@ fastify.get('/', async (request, reply) => {
     return reply.graphql(query)
 })
 
-/* const handleGraphQL = async (request, reply) => {
-    const {query, variables} = request.body
-    console.log(query, variables)
-    const result = await graphql(schema, query, resolvers, null ,variables)
-    reply.send(result);
-}
-
-fastify.post('/graphql', handleGraphQL) */
 
 // Start the server
 const start = async () => {
