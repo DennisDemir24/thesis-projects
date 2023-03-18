@@ -1,16 +1,132 @@
 const fastify = require('fastify')()
-const mongoose = require('mongoose');
+const mercurius = require('mercurius')
 const { graphql, buildSchema } = require('graphql');
+const Characters = require('./models/Character');
+const express = require('express');
+const app = express();
+const connectDB = require('./db/connect');
+connectDB()
 
 
 
+const myMiddleware = (req, res, next) => {
+    console.log('This is my middleware')
+    next()
+}
+app.use(myMiddleware)
 
+const schema = `
+    type Query {
+        characters: [Character]
+        character(id: ID!): Character
+        charactersByIds(ids: [ID!]!): [Character]
+        getCharacters(amount: Int): [Character]
+    }
+
+    type Location {
+        name: String,
+        url: String
+    }
+
+    type Origin {
+        name: String,
+        url: String
+    }
+
+    type Character {
+        id: ID
+        name: String
+        status: String
+        species: String
+        type: String
+        gender: String
+        origin: Origin
+        location: Location
+        image: String
+        episodes: [String]
+        url: String
+    }
+`
+
+// Define resolvers
+const resolvers = {
+    Query: {
+        
+    
+        characters: async () => {
+            try {
+                const characters = await Characters.find()
+                return characters
+            } catch (error) {
+                console.error(error)
+            }
+        },
+        getCharacters: async (_, {amount}) => {
+            try {
+                const characters = await Characters.find().limit(amount)
+                return characters
+            } catch (error) {
+                console.error(error)
+            }
+        },
+        character: async (_, {id}) => {
+            try {
+                const character = await Characters.findOne({
+                    id: id
+                })
+                return {
+                    ...character._doc
+                }
+            } catch (error) {
+                console.error(error)
+            }
+        },
+        charactersByIds: async (_, {ids}) => {
+            try {
+                const characters = await Characters.find({
+                    id: {
+                        $in: ids
+                    }
+                })
+                return characters
+            } catch (error) {
+                console.error(error)
+            }
+        }
+    }
+}
+
+fastify.register(mercurius, {
+    schema,
+    resolvers,
+    graphiql: true
+})
+
+fastify.get('/', async (request, reply) => {
+    const {query} = request.body
+    return reply.graphql(query)
+})
+
+/* const handleGraphQL = async (request, reply) => {
+    const {query, variables} = request.body
+    console.log(query, variables)
+    const result = await graphql(schema, query, resolvers, null ,variables)
+    reply.send(result);
+}
+
+fastify.post('/graphql', handleGraphQL) */
 
 // Start the server
-fastify.listen({port: 3000}, (err, address) => {
-    if (err) {
-      console.error(err);
-      process.exit(1);
+const start = async () => {
+    try {
+        await fastify.listen({
+            port: 5008
+        })
+        fastify.log.info(`server listening on ${fastify.server.address().port}`)
+    } catch (err) {
+        fastify.log.error(err)
+        process.exit(1)
     }
-    console.log(`Server running at ${address}`);
-  });
+}
+
+start()

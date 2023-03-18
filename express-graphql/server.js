@@ -8,10 +8,6 @@ const {
 } = require('./utils/performance')
 
 // Define the middleware function
-const myMiddleware = (req, res, next) => {
-    console.log('Custom middleware was executed!');
-    next();
-  };
 
   app.use(express.json())
   app.use(express.urlencoded({ extended: false }));
