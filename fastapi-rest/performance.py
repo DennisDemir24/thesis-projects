@@ -19,10 +19,10 @@ class PerformanceMiddleware:
                         (b"x-runtime", str((time.time() - start_time) * 1000).encode())
                     )
                     headers.append(
-                        (b"x-cpu-used", str(psutil.cpu_percent() - start_cpu).encode())
+                        (b"x-cpu-used", str(start_cpu).encode())
                     )
                     headers.append(
-                        (b"x-memory-used", str(psutil.virtual_memory().percent - start_mem).encode())
+                        (b"x-memory-used", str(start_mem).encode())
                     )
                     message["headers"] = headers
                 await send(message)

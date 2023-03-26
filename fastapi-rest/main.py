@@ -33,10 +33,6 @@ app.add_middleware(
 # Add performance middleware
 app.add_middleware(PerformanceMiddleware)
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
 @app.get("/characters/")
 def get_character():
     response = fetch_all_characters()
