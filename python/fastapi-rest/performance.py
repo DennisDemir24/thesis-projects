@@ -1,6 +1,5 @@
 import time
 import psutil
-from fastapi import Request
 
 class PerformanceMiddleware:
     def __init__(self, app):
