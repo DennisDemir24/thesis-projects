@@ -6,23 +6,16 @@ class PerformanceMiddleware:
         self.app = app
 
     def __call__(self, environ, start_response):
-        if environ["REQUEST_METHOD"] == "GET":
-            start_time = time.time()
-            start_cpu = psutil.cpu_percent()
-            start_mem = psutil.virtual_memory().percent
+        start_time = time.time()
+        start_cpu = psutil.cpu_percent()
+        start_mem = psutil.virtual_memory().percent
 
-            def start_response_wrapper(status, headers, exc_info=None):
-                headers.append(
-                    (b"x-runtime", str((time.time() - start_time) * 1000).encode())
-                )
-                headers.append(
-                    (b"x-cpu-used", str(start_cpu).encode())
-                )
-                headers.append(
-                    (b"x-memory-used", str(start_mem).encode())
-                )
-                return start_response(status, headers, exc_info)
+        def start_response_wrapper(status, headers, *args, **kwargs):
+            headers += [
+                ("x-runtime", str((time.time() - start_time) * 1000)),
+                ("x-cpu-used", str(start_cpu)),
+                ("x-memory-used", str(start_mem)),
+            ]
+            return start_response(status, headers, *args, **kwargs)
 
-            return self.app(environ, start_response_wrapper)
-        else:
-            return self.app(environ, start_response)
+        return self.app(environ, start_response_wrapper)

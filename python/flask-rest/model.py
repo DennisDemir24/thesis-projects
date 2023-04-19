@@ -8,9 +8,9 @@ class Character(BaseModel):
     species: str
     type: str 
     gender: str 
-    origin: dict 
-    location: dict 
+    origin: object 
+    location: object 
     image: str 
-    episodes: list 
+    episodes: object 
     url: str
     created: str
