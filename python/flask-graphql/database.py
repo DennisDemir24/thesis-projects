@@ -1,20 +1,23 @@
-from sqlalchemy.orm import Session
+#  en222yu
+#  Database connection MongoDB Flask
+
+import pymongo
+import os
 from model import Character
-from sqlalchemy import create_engine
+
+client = pymongo.MongoClient(os.environ['MONGO_URI'])
+db = client.RestThesisAPI
+collection = db.characters
 
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./characters.db"
-engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
-
-def get_db():
-    db = Session(bind=engine)
-    try:
-        yield db
-    finally:
-        db.close()
-
+# def fetch_one_character(id):
+#     document = collection.find_one({"id": id})
+#     return document
 
 def fetch_all_characters():
-    with get_db() as db:
-        characters = db.query(Character).all()
-        return characters
+    characters = []
+    cursor = collection.find({})
+    for document in cursor:
+        del document['_id']  # Remove the _id field
+        characters.append(Character(**document))
+    return characters

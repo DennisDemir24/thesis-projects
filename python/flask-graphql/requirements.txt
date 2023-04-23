@@ -1,0 +1,7 @@
+
+
+flask
+graphene
+graphql-core<3
+flask_graphql
+sqlalchemy

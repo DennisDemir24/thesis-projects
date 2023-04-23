@@ -1,6 +1,7 @@
 import graphene
 from flask import Flask
 from flask_graphql import GraphQLView
+from model import Character
 
 from database import fetch_all_characters
 
@@ -15,7 +16,7 @@ class Character(graphene.ObjectType):
     origin = graphene.List(graphene.String)
     location = graphene.List(graphene.String)
     image = graphene.String()
-    episodes = graphene.List(graphene.String)
+    episode = graphene.List(graphene.String)
     url = graphene.String()
     created = graphene.String()
 
