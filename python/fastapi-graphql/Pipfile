@@ -4,6 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+graphql-core = "==3.0.1"
+uvicorn = "==0.20.0"
 
 [dev-packages]
 

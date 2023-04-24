@@ -1,0 +1,6 @@
+graphql-core == 3.0.1
+uvicorn == 0.20.0
+strawberry-graphql
+fastapi
+psutil
+pymongo
