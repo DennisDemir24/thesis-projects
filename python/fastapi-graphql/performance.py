@@ -13,7 +13,7 @@ class PerformanceMiddleware:
 
             async def send_wrapper(message):
                 if message["type"] == "http.response.start":
-                    #Get metrics
+                    # Get metrics
                     response_time = (time.time() - start_time) * 1000
                     cpu_usage = start_cpu
                     memory_usage = start_mem

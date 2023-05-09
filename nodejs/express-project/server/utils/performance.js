@@ -22,6 +22,4 @@ export const endingMeasurment = (start) => {
         cpuUsed,
         memUsed
     }
-
-
 }

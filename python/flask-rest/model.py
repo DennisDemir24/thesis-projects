@@ -1,5 +1,6 @@
 # model.py
 from pydantic import BaseModel
+from typing import List
 
 class Character(BaseModel):
     id: int
@@ -11,6 +12,6 @@ class Character(BaseModel):
     origin: object 
     location: object 
     image: str 
-    episodes: object 
+    episode: List[str] 
     url: str
     created: str

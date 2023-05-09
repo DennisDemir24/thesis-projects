@@ -11,11 +11,16 @@ class PerformanceMiddleware:
         start_mem = psutil.virtual_memory().percent
 
         def start_response_wrapper(status, headers, *args, **kwargs):
-            headers += [
-                ("x-runtime", str((time.time() - start_time) * 1000)),
-                ("x-cpu-used", str(start_cpu)),
-                ("x-memory-used", str(start_mem)),
-            ]
+            # Get metrics
+            response_time = (time.time() - start_time) * 1000
+            cpu_usage = start_cpu
+            memory_usage = start_mem
+
+            # Print the performance metrics to the console
+            print(f"Response Time: {response_time} ms")
+            print(f"CPU Usage: {cpu_usage}%")
+            print(f"Memory Usage: {memory_usage}%")
+            
             return start_response(status, headers, *args, **kwargs)
 
         return self.app(environ, start_response_wrapper)

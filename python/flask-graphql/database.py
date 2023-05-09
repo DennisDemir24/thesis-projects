@@ -10,9 +10,11 @@ db = client.RestThesisAPI
 collection = db.characters
 
 
-# def fetch_one_character(id):
-#     document = collection.find_one({"id": id})
-#     return document
+def fetch_one_character(id):
+     document = collection.find_one({"id": id})
+     del document['_id']  # Remove the _id field
+     character = Character(**document)
+     return character
 
 def fetch_all_characters():
     characters = []
