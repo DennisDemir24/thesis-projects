@@ -1,27 +1,22 @@
 import time
 import psutil
-from flask import request
-
 
 class PerformanceMiddleware:
     def __init__(self, app):
         self.app = app
 
     def __call__(self, environ, start_response):
-        request_start_time = time.time()
-        request_start_cpu = psutil.cpu_percent()
-        request_start_mem = psutil.virtual_memory().percent
+        if environ["REQUEST_METHOD"] == "POST" and environ["CONTENT_TYPE"] == "application/json":
+            start_time = time.time()
+            start_cpu = psutil.cpu_percent()
+            start_mem = psutil.virtual_memory().percent
 
-        def custom_start_response(status, headers, *args, **kwargs):
-            headers.append(
-                (b"x-runtime", str((time.time() - request_start_time) * 1000).encode())
-            )
-            headers.append(
-                (b"x-cpu-used", str(request_start_cpu).encode())
-            )
-            headers.append(
-                (b"x-memory-used", str(request_start_mem).encode())
-            )
-            return start_response(status, headers, *args, **kwargs)
+            def start_response_wrapper(status, headers, exc_info=None):
+                headers.append(("x-runtime", str((time.time() - start_time) * 1000)))
+                headers.append(("x-cpu-used", str(start_cpu)))
+                headers.append(("x-memory-used", str(start_mem)))
+                return start_response(status, headers, exc_info)
 
-        return self.app(environ, custom_start_response)
+            return self.app(environ, start_response_wrapper)
+        else:
+            return self.app(environ, start_response)

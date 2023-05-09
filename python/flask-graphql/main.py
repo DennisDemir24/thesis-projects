@@ -2,6 +2,7 @@ import graphene
 from flask import Flask
 from flask_graphql import GraphQLView
 from model import Character
+from performance import PerformanceMiddleware
 
 from database import fetch_all_characters
 
@@ -44,10 +45,12 @@ schema = graphene.Schema(query=Query)
 
 app = Flask(__name__)
 
-app.add_url_rule(
-    "/graphql",
-    view_func=GraphQLView.as_view("graphql", schema=schema, graphiql=True),
-)
+#app.add_url_rule(
+#    "/graphql",
+#    view_func=GraphQLView.as_view("graphql", schema=schema, graphiql=True),
+#)
+
+app.add_url_rule('/graphql', view_func=GraphQLView.as_view('graphql', schema=schema, graphiql=True, middleware=[PerformanceMiddleware]))
 
 if __name__ == "__main__":
     app.run(debug=True)
