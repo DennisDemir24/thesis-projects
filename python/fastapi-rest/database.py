@@ -12,7 +12,6 @@ collection = db.characters
 
 def fetch_one_character(id):
     document = collection.find_one({"id": int(id)})
-    print(document)
     return document
 
 def fetch_all_characters(): 

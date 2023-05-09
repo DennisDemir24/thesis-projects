@@ -1,6 +1,4 @@
-#  en222yu
-
-# Pydantic allows auto creation of JSON Schemas from models
+from typing import List
 from pydantic import BaseModel
 
 
@@ -14,7 +12,7 @@ class Character(BaseModel):
     origin: object 
     location: object 
     image: str 
-    episodes: object
+    episode: List[str]
     url: str
     created: str
 
