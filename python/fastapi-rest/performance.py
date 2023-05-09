@@ -13,17 +13,13 @@ class PerformanceMiddleware:
 
             async def send_wrapper(message):
                 if message["type"] == "http.response.start":
-                    headers = message.get("headers", [])
-                    headers.append(
-                        (b"x-runtime", str((time.time() - start_time) * 1000).encode())
-                    )
-                    headers.append(
-                        (b"x-cpu-used", str(start_cpu).encode())
-                    )
-                    headers.append(
-                        (b"x-memory-used", str(start_mem).encode())
-                    )
-                    message["headers"] = headers
+                    # Print the performance metrics to the console
+                    response_time = (time.time() - start_time) * 1000
+                    cpu_usage = start_cpu
+                    memory_usage = start_mem
+                    print(f"Response Time: {response_time} ms")
+                    print(f"CPU Usage: {cpu_usage}%")
+                    print(f"Memory Usage: {memory_usage}%")
                 await send(message)
 
             await self.app(scope, receive, send_wrapper)
