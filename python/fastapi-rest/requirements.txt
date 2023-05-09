@@ -1,13 +1,4 @@
-
-
-# Fastening light Python Framework for API build
-#fastapi == 0.92.0
-
-# Fast ASGI server implementation which helps in the interaction between your application and the backend 
-#uvicorn == 0.20.0
-
-#Mongo driver
-#pymongo == 4.3.3
-
-#metrics
-#fastapi-metrics
+uvicorn == 0.20.0
+fastapi
+psutil
+pymongo
