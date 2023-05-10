@@ -7,20 +7,26 @@ class PerformanceMiddleware:
 
     def __call__(self, environ, start_response):
         start_time = time.time()
-        start_cpu = psutil.cpu_percent()
-        start_mem = psutil.virtual_memory().percent
+        start_usage = psutil.cpu_times()
+        start_memory = psutil.Process().memory_info().rss
 
-        def start_response_wrapper(status, headers, *args, **kwargs):
-            # Get metrics
-            response_time = (time.time() - start_time) * 1000
-            cpu_usage = start_cpu
-            memory_usage = start_mem
+        def custom_start_response(status, headers, exc_info=None):
+            end_time = time.time()
+            elapsed_time = int((end_time - start_time) * 1000)
 
-            # Print the performance metrics to the console
-            print(f"Response Time: {response_time} ms")
-            print(f"CPU Usage: {cpu_usage}%")
-            print(f"Memory Usage: {memory_usage}%")
-            
-            return start_response(status, headers, *args, **kwargs)
+            cpu_used = (psutil.cpu_times().user - start_usage.user) / 1000
+            cpu_used = round(cpu_used, 3)
+            mem_used = (psutil.Process().memory_info().rss - start_memory) / 1024 / 1024
+            mem_used = round(mem_used, 2)
 
-        return self.app(environ, start_response_wrapper)
+            performance_metrics = {
+                "time": elapsed_time,
+                "cpuUsed": cpu_used,
+                "memUsed": mem_used
+            }
+
+            print(performance_metrics)
+
+            return start_response(status, headers, exc_info)
+
+        return self.app(environ, custom_start_response)
