@@ -29,4 +29,4 @@ def get_character_by_id(id):
     return jsonify({"error": f"There is no character with the id {id}"}), 404
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5050)
