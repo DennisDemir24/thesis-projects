@@ -52,8 +52,9 @@ const schema = `
         origin: Origin
         location: Location
         image: String
-        episodes: [String]
+        episode: [String]
         url: String
+        created: String
     }
 `
 

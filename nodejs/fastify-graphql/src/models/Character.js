@@ -28,10 +28,13 @@ const CharacterSchema = new mongoose.Schema({
     image: {
         type: String,
     },
-    episodes: {
+    episode: {
         type: Array,
     },
     url: {
+        type: String,
+    },
+    created: {
         type: String,
     }
 })

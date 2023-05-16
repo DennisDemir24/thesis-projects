@@ -54,7 +54,7 @@ fastify.get('/api/characters/:id', async (request, reply) => {
 const start = async () => {
     try {
         await fastify.listen({
-            port: 5008
+            port: 5050
         })
         fastify.log.info(`server listening on ${fastify.server.address().port}`)
     } catch (err) {

@@ -40,5 +40,3 @@ def get_character_by_id(id):
     raise HTTPException(404, f"There is no character with the id {id}")
 
 
-
-

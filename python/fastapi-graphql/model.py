@@ -3,6 +3,14 @@
 from typing import List
 from pydantic import BaseModel
 
+class Origin(BaseModel):
+    name: str
+    url: str
+
+
+class Location(BaseModel):
+    name: str
+    url: str
 
 class Character(BaseModel):
     id: int
@@ -11,8 +19,8 @@ class Character(BaseModel):
     species: str
     type: str 
     gender: str 
-    origin: object 
-    location: object 
+    origin: Origin 
+    location: Location 
     image: str 
     episode: List[str]
     url: str

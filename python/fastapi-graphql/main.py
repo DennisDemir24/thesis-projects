@@ -12,6 +12,15 @@ from database import (
     fetch_all_characters
 )
 
+@strawberry.type
+class Origin:
+    name: str
+    url: str
+
+@strawberry.type
+class Location:
+    name: str
+    url: str
 
 @strawberry.type
 class Character:
@@ -21,8 +30,8 @@ class Character:
     species: str
     type: str 
     gender: str 
-    origin:  typing.List[str] 
-    location: typing.List[str]  
+    origin: Origin
+    location: Location
     image: str 
     episode: typing.List[str]
     url: str

@@ -1,5 +1,13 @@
 import graphene
 
+class OriginType(graphene.ObjectType):
+    name = graphene.String()
+    url = graphene.String()
+
+class LocationType(graphene.ObjectType):
+    name = graphene.String()
+    url = graphene.String()
+
 class Character(graphene.ObjectType):
     id = graphene.Int()
     name = graphene.String()

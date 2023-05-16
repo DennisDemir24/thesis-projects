@@ -8,6 +8,14 @@ from database import (
     fetch_one_character,
     fetch_all_characters
 )
+class OriginType(graphene.ObjectType):
+    name = graphene.String()
+    url = graphene.String()
+
+class LocationType(graphene.ObjectType):
+    name = graphene.String()
+    url = graphene.String()
+
 
 class Character(graphene.ObjectType):
     id = graphene.String()
@@ -16,8 +24,8 @@ class Character(graphene.ObjectType):
     species = graphene.String()
     type = graphene.String()
     gender = graphene.String()
-    origin = graphene.List(graphene.String)
-    location = graphene.List(graphene.String)
+    origin = graphene.Field(lambda: OriginType)
+    location = graphene.Field(lambda: LocationType)
     image = graphene.String()
     episode = graphene.List(graphene.String)
     url = graphene.String()
