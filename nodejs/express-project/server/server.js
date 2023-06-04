@@ -2,7 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import characterRoutes from './routes/characterRoutes.js'
 import connectDB from './db/connect.js'
-import { startingMeasurment, endingMeasurment } from './utils/performance.js'
+import { startingMeasurement, endingMeasurement } from './utils/performance.js'
 import {seed} from "./seedScript.js"
 dotenv.config()
 const app = express()
@@ -14,9 +14,9 @@ app.use(express.urlencoded({ extended: false }));
 
 // use startMeasurment and endingMeasurment middleware
 app.use((req, res, next) => {
-    const start = startingMeasurment()
+    const start = startingMeasurement()
     res.on('finish', () => {
-        const end = endingMeasurment(start)
+        const end = endingMeasurement(start)
         console.log(JSON.stringify(end))
     })
     next()

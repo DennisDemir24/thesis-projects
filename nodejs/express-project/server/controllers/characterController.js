@@ -29,4 +29,5 @@ const getCharacter = async (req, res) => {
 
 
 
+
 export {getCharacters,getCharacter} 

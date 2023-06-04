@@ -3,15 +3,15 @@ const express = require('express')
 const fastifyExpress = require('@fastify/express');
 //const characterRoutes = require('./routes/characterRoutes')
 const connectDB = require('./db/connect')
-const {startingMeasurment, endingMeasurment} = require('./utils/performance')
+const {startingMeasurement, endingMeasurement} = require('./utils/performance')
 const Character = require('./models/Character')
 const {getCharacters} = require('./controllers/characterController')
 connectDB()
 const app = express()
 
 const myMiddleware = (request, reply, done) => {
-    const start = startingMeasurment()
-    const end = endingMeasurment(start)
+    const start = startingMeasurement()
+    const end = endingMeasurement(start)
     // reply.send(JSON.stringify(end))
     console.log(
         JSON.stringify(end)
@@ -54,7 +54,7 @@ fastify.get('/api/characters/:id', async (request, reply) => {
 const start = async () => {
     try {
         await fastify.listen({
-            port: 5050
+            port: 5151
         })
         fastify.log.info(`server listening on ${fastify.server.address().port}`)
     } catch (err) {

@@ -3,14 +3,14 @@ const mercurius = require('mercurius')
 const Characters = require('./models/Character');
 const express = require('express');
 const connectDB = require('./db/connect');
-const {startingMeasurment, endingMeasurment} = require('./utils/performance')
+const {startingMeasurement, endingMeasurement} = require('./utils/performance')
 connectDB()
 
 
 
 const myMiddleware = (request, reply, done) => {
-    const start = startingMeasurment()
-    const end = endingMeasurment(start)
+    const start = startingMeasurement()
+    const end = endingMeasurement(start)
     // reply.send(JSON.stringify(end))
     console.log(
         JSON.stringify(end)
@@ -122,7 +122,7 @@ fastify.get('/', async (request, reply) => {
 const start = async () => {
     try {
         await fastify.listen({
-            port: 5008
+            port: 5151
         })
         fastify.log.info(`server listening on ${fastify.server.address().port}`)
     } catch (err) {

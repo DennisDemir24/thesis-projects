@@ -3,23 +3,26 @@ const app = express();
 const {ApolloServer, gql} = require('apollo-server-express');
 const Characters = require('./models/Character')
 const {
-    startingMeasurment,
-    endingMeasurment,
+    startingMeasurement,
+    endingMeasurement,
 } = require('./utils/performance')
 
 // Define the middleware function
 
   app.use(express.json())
   app.use(express.urlencoded({ extended: false }));
-  app.use((req, res, next) => {
-      const start = startingMeasurment()
-      console.log(start)
+
+  app.use('/graphql', (req, res, next) => {
+    if (req.body && req.body.query && (req.body.query.includes('characters') || req.body.query.includes('character'))) {
+      const start = startingMeasurement();
+      console.log(start);
       res.on('finish', () => {
-          const end = endingMeasurment(start)
-          console.log(JSON.stringify(end))
-      })
-      next()
-  })
+        const end = endingMeasurement(start);
+        console.log(JSON.stringify(end));
+      });
+    }
+    next();
+  });
 
 const mongoose = require('mongoose')
 

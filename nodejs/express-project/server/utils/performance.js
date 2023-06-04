@@ -1,25 +1,29 @@
-import {cpuUsage, memoryUsage} from 'process'
+import { cpuUsage } from 'process';
 
-export const startingMeasurment = () => {
-    const start = new Date()
+export const startingMeasurement = () => {
+  const start = new Date();
+  const getUsage = process.cpuUsage();
 
-    const getUsage = cpuUsage()
+  return {
+    time: start,
+    usage: getUsage,
+  };
+};
 
-    return {
-        time: start,
-        usage: getUsage
-    }
-}
+export const endingMeasurement = (start) => {
+  const end = new Date();
+  const time = end.getTime() - start.time.getTime();
 
-export const endingMeasurment = (start) => {
-    const end = new Date()
-    const time = end.getTime() - start.time.getTime()
-    const cpuUsed = cpuUsage(start.usage).user / 1000
-    const memUsed = (memoryUsage().heapUsed / 1024 / 1024).toFixed(2)
+  const elapsedUsage = process.cpuUsage(start.usage);
+  const elapsedUsageMs = elapsedUsage.user + elapsedUsage.system;
+  const totalUsageMs = time * 1000;
+  const cpuUsagePercent = ((elapsedUsageMs / totalUsageMs) * 100).toFixed(2);
 
-    return {
-        time,
-        cpuUsed,
-        memUsed
-    }
-}
+  const memUsed = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2);
+
+  return {
+    time,
+    cpuUsagePercent,
+    memUsed,
+  };
+};
