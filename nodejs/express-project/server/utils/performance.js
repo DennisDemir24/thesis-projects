@@ -1,8 +1,8 @@
-import { cpuUsage } from 'process';
+const { cpuUsage, hrtime } = require('process');
 
-export const startingMeasurement = () => {
-  const start = new Date();
-  const getUsage = process.cpuUsage();
+const startingMeasurement = () => {
+  const start = hrtime.bigint();
+  const getUsage = cpuUsage();
 
   return {
     time: start,
@@ -10,14 +10,17 @@ export const startingMeasurement = () => {
   };
 };
 
-export const endingMeasurement = (start) => {
-  const end = new Date();
-  const time = end.getTime() - start.time.getTime();
+const endingMeasurement = (start) => {
+  const end = hrtime.bigint();
+  const time = Number(end - start.time) / 1000000; // Convert nanoseconds to milliseconds
 
-  const elapsedUsage = process.cpuUsage(start.usage);
-  const elapsedUsageMs = elapsedUsage.user + elapsedUsage.system;
-  const totalUsageMs = time * 1000;
-  const cpuUsagePercent = ((elapsedUsageMs / totalUsageMs) * 100).toFixed(2);
+  const elapsedUsage = cpuUsage(start.usage);
+  const elapsedUsageMs = elapsedUsage.user / 1000 + elapsedUsage.system / 1000; // Convert microseconds to milliseconds
+
+  let cpuUsagePercent = 0;
+  if (time !== 0) {
+    cpuUsagePercent = ((elapsedUsageMs / time) * 100).toFixed(2);
+  }
 
   const memUsed = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2);
 
@@ -26,4 +29,9 @@ export const endingMeasurement = (start) => {
     cpuUsagePercent,
     memUsed,
   };
+};
+
+module.exports = {
+  startingMeasurement,
+  endingMeasurement,
 };
